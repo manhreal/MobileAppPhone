@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, KeyboardAvoidingView, Platform, Alert,
+  StyleSheet, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../constants/colors';
+import { showAlert } from '../store/useAlertStore';
 import { useAuthStore } from '../store/useAuthStore';
 import { findOrCreateUser } from '../services/userService';
 
@@ -16,7 +17,7 @@ export default function LoginScreen() {
   const handleLogin = () => {
     const cleaned = phone.trim().replace(/\s/g, '');
     if (cleaned.length < 9 || cleaned.length > 11) {
-      Alert.alert('Lỗi', 'Số điện thoại không hợp lệ');
+      showAlert('Lỗi', 'Số điện thoại không hợp lệ');
       return;
     }
     setLoading(true);
@@ -24,7 +25,7 @@ export default function LoginScreen() {
       const user = findOrCreateUser(cleaned);
       setUser(user);
     } catch (e) {
-      Alert.alert('Lỗi', 'Đăng nhập thất bại, thử lại nhé!');
+      showAlert('Lỗi', 'Đăng nhập thất bại, thử lại nhé!');
     } finally {
       setLoading(false);
     }

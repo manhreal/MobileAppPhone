@@ -1,0 +1,35 @@
+import { create } from 'zustand';
+
+export interface AlertButton {
+  text: string;
+  style?: 'default' | 'cancel' | 'destructive';
+  onPress?: () => void;
+}
+
+interface AlertState {
+  visible: boolean;
+  title: string;
+  message: string;
+  buttons: AlertButton[];
+  show: (title: string, message: string, buttons?: AlertButton[]) => void;
+  hide: () => void;
+}
+
+export const useAlertStore = create<AlertState>((set) => ({
+  visible: false,
+  title: '',
+  message: '',
+  buttons: [],
+  show: (title, message, buttons = [{ text: 'OK' }]) =>
+    set({ visible: true, title, message, buttons }),
+  hide: () => set({ visible: false }),
+}));
+
+/** Dùng thay thế Alert.alert() — hoạt động trên cả web, iOS, Android */
+export const showAlert = (
+  title: string,
+  message: string,
+  buttons?: AlertButton[]
+): void => {
+  useAlertStore.getState().show(title, message, buttons);
+};

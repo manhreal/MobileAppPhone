@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, ScrollView, Alert, Platform,
+  StyleSheet, ScrollView, Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { Colors } from '../constants/colors';
+import { showAlert } from '../store/useAlertStore';
 import { HomeStackParamList } from '../types';
 import { useAuthStore } from '../store/useAuthStore';
 import { useOrderStore } from '../store/useOrderStore';
@@ -33,7 +34,7 @@ export default function ServiceFormScreen() {
 
   const handleSubmit = () => {
     if (!customerName.trim() || !phone.trim() || !address.trim() || !scheduledAt.trim()) {
-      Alert.alert('Thiếu thông tin', 'Vui lòng điền đầy đủ các trường bắt buộc (*)');
+      showAlert('Thiếu thông tin', 'Vui lòng điền đầy đủ các trường bắt buộc (*)');
       return;
     }
     if (!user) return;
@@ -56,7 +57,7 @@ export default function ServiceFormScreen() {
       addOrder(order);
       navigation.navigate('OrderSummary', { orderId: order.id });
     } catch (e) {
-      Alert.alert('Lỗi', 'Không thể tạo đơn, vui lòng thử lại');
+      showAlert('Lỗi', 'Không thể tạo đơn, vui lòng thử lại');
     } finally {
       setLoading(false);
     }

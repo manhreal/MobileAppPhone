@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
-  StyleSheet, Alert,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { showAlert } from '../store/useAlertStore';
 import { ISSUES } from '../constants/devices';
 import { Colors } from '../constants/colors';
 import { HomeStackParamList, Issue } from '../types';
@@ -32,7 +33,7 @@ export default function ScanIssueScreen() {
 
   const handleNext = () => {
     if (selected.size === 0) {
-      Alert.alert('Chọn lỗi', 'Vui lòng chọn ít nhất một lỗi máy');
+      showAlert('Chọn lỗi', 'Vui lòng chọn ít nhất một lỗi máy');
       return;
     }
     const issues: Issue[] = ISSUES.filter((i) => selected.has(i.id));

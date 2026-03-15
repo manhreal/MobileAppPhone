@@ -7,6 +7,7 @@ import { AppNavigator } from './src/navigation/AppNavigator';
 import { runMigrations } from './src/database/migrations';
 import { seedDatabase } from './src/database/seed';
 import { Colors } from './src/constants/colors';
+import { AlertDialog } from './src/components/AlertDialog';
 
 const theme = {
   ...MD3LightTheme,
@@ -43,6 +44,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <PaperProvider theme={theme}>
         <AppNavigator />
+        <AlertDialog />
       </PaperProvider>
     </GestureHandlerRootView>
   );

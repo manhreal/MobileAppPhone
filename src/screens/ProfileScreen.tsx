@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, Alert,
+  StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { showAlert } from '../store/useAlertStore';
 import { OrderCard } from '../components/OrderCard';
 import { Colors } from '../constants/colors';
 import { useAuthStore } from '../store/useAuthStore';
@@ -28,7 +29,7 @@ export default function ProfileScreen() {
   const warrantyOrders = doneOrders; // In demo: all done orders have warranty
 
   const handleLogout = () => {
-    Alert.alert('Đăng xuất', 'Bạn chắc muốn đăng xuất?', [
+    showAlert('Đăng xuất', 'Bạn chắc muốn đăng xuất?', [
       { text: 'Huỷ', style: 'cancel' },
       { text: 'Đăng xuất', style: 'destructive', onPress: logout },
     ]);
