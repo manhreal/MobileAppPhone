@@ -1,20 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PaperProvider, MD3LightTheme } from 'react-native-paper';
+
+import { AppNavigator } from './src/navigation/AppNavigator';
+import { runMigrations } from './src/database/migrations';
+import { seedDatabase } from './src/database/seed';
+import { Colors } from './src/constants/colors';
+
+const theme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: Colors.primary,
+    secondary: Colors.secondary,
+  },
+};
 
 export default function App() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    try {
+      runMigrations();
+      seedDatabase();
+    } catch (e) {
+      console.error('DB init error:', e);
+    } finally {
+      setReady(true);
+    }
+  }, []);
+
+  if (!ready) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaperProvider theme={theme}>
+        <AppNavigator />
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
