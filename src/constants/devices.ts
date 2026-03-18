@@ -35,13 +35,13 @@ export const DEVICE_MODELS: DeviceModel[] = [
 ];
 
 export const ISSUES: Issue[] = [
-  { id: 'broken_screen', label: 'Vỡ màn hình' },
-  { id: 'touch_issue', label: 'Loạn cảm ứng' },
-  { id: 'battery_weak', label: 'Pin yếu' },
-  { id: 'no_power', label: 'Không lên nguồn' },
-  { id: 'speaker_issue', label: 'Lỗi loa / mic' },
-  { id: 'overheating', label: 'Máy nóng' },
-  { id: 'water_damage', label: 'Vào nước' },
-  { id: 'camera_issue', label: 'Lỗi camera' },
-  { id: 'charging_issue', label: 'Không sạc được' },
+  { id: 'broken_screen', label: 'Vỡ màn hình', price: 800000 },
+  { id: 'touch_issue', label: 'Loạn cảm ứng', price: 350000 },
+  { id: 'battery_weak', label: 'Pin yếu', price: 250000 },
+  { id: 'no_power', label: 'Không lên nguồn', price: 500000 },
+  { id: 'speaker_issue', label: 'Lỗi loa / mic', price: 300000 },
+  { id: 'overheating', label: 'Máy nóng', price: 200000 },
+  { id: 'water_damage', label: 'Vào nước', price: 700000 },
+  { id: 'camera_issue', label: 'Lỗi camera', price: 450000 },
+  { id: 'charging_issue', label: 'Không sạc được', price: 300000 },
 ];

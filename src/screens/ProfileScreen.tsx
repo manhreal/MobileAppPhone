@@ -46,7 +46,12 @@ export default function ProfileScreen() {
             </Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{user?.name}</Text>
+            <View style={styles.nameRow}>
+              <Text style={styles.name}>{user?.name}</Text>
+              <View style={styles.memberBadge}>
+                <Text style={styles.memberBadgeText}>🥉 Đồng</Text>
+              </View>
+            </View>
             <Text style={styles.phone}>{user?.phone}</Text>
           </View>
           <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
@@ -143,7 +148,15 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   avatarText: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
+  nameRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   name: { fontSize: 17, fontWeight: 'bold', color: Colors.text },
+  memberBadge: {
+    backgroundColor: '#CD7F32',
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  memberBadgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
   phone: { fontSize: 13, color: Colors.textSecondary, marginTop: 2 },
   logoutBtn: { padding: 8 },
   statsRow: {

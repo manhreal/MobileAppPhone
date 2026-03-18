@@ -22,7 +22,7 @@ export const HomeStack = () => (
     <Stack.Screen
       name="HomeMain"
       component={HomeScreen}
-      options={{ title: 'Cáo Con Sửa Máy' }}
+      options={{ title: 'FOXY' }}
     />
     <Stack.Screen
       name="DeviceModel"

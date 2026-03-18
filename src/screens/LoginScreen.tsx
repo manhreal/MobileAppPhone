@@ -40,7 +40,7 @@ export default function LoginScreen() {
         {/* Logo */}
         <View style={styles.logoBox}>
           <Text style={styles.fox}>🦊</Text>
-          <Text style={styles.brand}>Cáo Con Sửa Máy</Text>
+          <Text style={styles.brand}>FOXY</Text>
           <Text style={styles.tagline}>Đặt lịch sửa thiết bị tại nhà</Text>
         </View>
 

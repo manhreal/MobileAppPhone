@@ -7,11 +7,11 @@ export const Banner = () => (
     <View style={styles.inner}>
       <Text style={styles.fox}>🦊</Text>
       <View>
-        <Text style={styles.title}>Cáo Con Sửa Máy</Text>
+        <Text style={styles.title}>FOXY</Text>
         <Text style={styles.sub}>Nhanh – Uy tín – Bảo hành 3 tháng</Text>
       </View>
     </View>
-    <Text style={styles.badge}>Miễn phí kiểm tra</Text>
+    <Text style={styles.badge}>Nâng cấp quyền lợi</Text>
   </View>
 );
 

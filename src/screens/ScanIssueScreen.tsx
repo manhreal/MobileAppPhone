@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet,
@@ -16,12 +16,37 @@ import { HomeStackParamList, Issue } from '../types';
 type Route = RouteProp<HomeStackParamList, 'ScanIssue'>;
 type Nav = StackNavigationProp<HomeStackParamList, 'ScanIssue'>;
 
+const formatPrice = (price: number) =>
+  price.toLocaleString('vi-VN') + 'đ';
+
 export default function ScanIssueScreen() {
   const route = useRoute<Route>();
   const navigation = useNavigation<Nav>();
   const { deviceId, deviceName, modelId, modelName } = route.params;
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [scanning, setScanning] = useState(false);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          style={headerStyles.scanBtn}
+          onPress={handleScan}
+          activeOpacity={0.8}
+        >
+          <MaterialIcons name="qr-code-scanner" size={16} color="#fff" />
+          <Text style={headerStyles.scanText}>Quét lỗi</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
+  const handleScan = () => {
+    setScanning(true);
+    showAlert('Quét lỗi', 'Đang phân tích thiết bị... Tính năng AI Scan sẽ sớm ra mắt!');
+    setTimeout(() => setScanning(false), 1000);
+  };
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -39,6 +64,9 @@ export default function ScanIssueScreen() {
     const issues: Issue[] = ISSUES.filter((i) => selected.has(i.id));
     navigation.navigate('ServiceForm', { deviceId, deviceName, modelId, modelName, issues });
   };
+
+  const totalPrice = ISSUES.filter((i) => selected.has(i.id))
+    .reduce((sum, i) => sum + i.price, 0);
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
@@ -61,31 +89,63 @@ export default function ScanIssueScreen() {
               onPress={() => toggle(item.id)}
               activeOpacity={0.8}
             >
-              <Text style={[styles.itemText, isSelected && styles.itemTextSelected]}>
-                {item.label}
-              </Text>
-              <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                {isSelected && <MaterialIcons name="check" size={16} color="#fff" />}
+              <View style={styles.itemLeft}>
+                <Text style={[styles.itemText, isSelected && styles.itemTextSelected]}>
+                  {item.label}
+                </Text>
+                {isSelected && (
+                  <Text style={styles.priceText}>{formatPrice(item.price)}</Text>
+                )}
+              </View>
+              <View style={styles.itemRight}>
+                {!isSelected && (
+                  <Text style={styles.priceDim}>{formatPrice(item.price)}</Text>
+                )}
+                <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                  {isSelected && <MaterialIcons name="check" size={16} color="#fff" />}
+                </View>
               </View>
             </TouchableOpacity>
           );
         }}
         ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
         ListFooterComponent={
-          <TouchableOpacity
-            style={[styles.button, selected.size === 0 && styles.buttonDisabled]}
-            onPress={handleNext}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonText}>
-              Tiếp tục đặt dịch vụ {selected.size > 0 ? `(${selected.size} lỗi)` : ''}
-            </Text>
-          </TouchableOpacity>
+          <View>
+            {selected.size > 0 && (
+              <View style={styles.totalBox}>
+                <Text style={styles.totalLabel}>Tổng dự tính:</Text>
+                <Text style={styles.totalPrice}>{formatPrice(totalPrice)}</Text>
+              </View>
+            )}
+            <TouchableOpacity
+              style={[styles.button, selected.size === 0 && styles.buttonDisabled]}
+              onPress={handleNext}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.buttonText}>
+                Tiếp tục đặt dịch vụ {selected.size > 0 ? `(${selected.size} lỗi)` : ''}
+              </Text>
+            </TouchableOpacity>
+          </View>
         }
       />
     </SafeAreaView>
   );
 }
+
+const headerStyles = StyleSheet.create({
+  scanBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    marginRight: 12,
+    gap: 4,
+  },
+  scanText: { color: '#fff', fontSize: 13, fontWeight: '700' },
+});
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.background },
@@ -108,20 +168,37 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     backgroundColor: Colors.primaryLight + '40',
   },
+  itemLeft: { flex: 1 },
   itemText: { fontSize: 15, color: Colors.text },
   itemTextSelected: { color: Colors.primary, fontWeight: '600' },
+  priceText: { fontSize: 13, color: Colors.primary, fontWeight: '700', marginTop: 3 },
+  itemRight: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  priceDim: { fontSize: 13, color: Colors.textSecondary },
   checkbox: {
     width: 24, height: 24, borderRadius: 6,
     borderWidth: 2, borderColor: Colors.border,
     alignItems: 'center', justifyContent: 'center',
   },
   checkboxSelected: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  totalBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 20,
+    borderLeftWidth: 4,
+    borderLeftColor: Colors.primary,
+  },
+  totalLabel: { fontSize: 14, color: Colors.textSecondary, fontWeight: '600' },
+  totalPrice: { fontSize: 18, fontWeight: 'bold', color: Colors.primary },
   button: {
     backgroundColor: Colors.primary,
     borderRadius: 14,
     paddingVertical: 18,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 12,
     elevation: 2,
   },
   buttonDisabled: { backgroundColor: Colors.disabled },

@@ -23,6 +23,7 @@ export interface DeviceModel {
 export interface Issue {
   id: string;
   label: string;
+  price: number;
 }
 
 // ─── Order ───────────────────────────────────────────────────────────────────
@@ -56,6 +57,7 @@ export type RootStackParamList = {
 export type MainTabParamList = {
   Home: undefined;
   Orders: undefined;
+  Promotions: undefined;
   Profile: undefined;
 };
 

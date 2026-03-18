@@ -11,6 +11,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import LoginScreen from '../screens/LoginScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import PromotionsScreen from '../screens/PromotionsScreen';
 import { HomeStack } from './HomeStack';
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -27,6 +28,7 @@ const MainTabs = () => (
         const icons: Record<string, keyof typeof MaterialIcons.glyphMap> = {
           Home: 'home',
           Orders: 'receipt-long',
+          Promotions: 'local-offer',
           Profile: 'person',
         };
         return <MaterialIcons name={icons[route.name]} size={size} color={color} />;
@@ -35,6 +37,7 @@ const MainTabs = () => (
   >
     <Tab.Screen name="Home" component={HomeStack} options={{ title: 'Trang chủ' }} />
     <Tab.Screen name="Orders" component={OrdersScreen} options={{ title: 'Đơn của tôi' }} />
+    <Tab.Screen name="Promotions" component={PromotionsScreen} options={{ title: 'Ưu đãi' }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{ title: 'Tài khoản' }} />
   </Tab.Navigator>
 );
