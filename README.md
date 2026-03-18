@@ -81,6 +81,8 @@ eas build:configure
 
 ```bash
 eas build --platform android --profile preview
+
+eas build -p android --profile preview
 ```
 
 > File APK được upload lên EAS cloud, tải về qua link được cung cấp sau khi build xong.
